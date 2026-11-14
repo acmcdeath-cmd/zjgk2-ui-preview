@@ -275,6 +275,7 @@ function initRuntime(){
   unbindFocus=bindKeyboardFocus(root);
  }
 }
+shell();
 root.addEventListener('click',event=>{
  if(event.target.classList?.contains('sheet-backdrop')){closeSheet();return;}
  const route=event.target.closest('[data-route]');
@@ -322,4 +323,3 @@ window.addEventListener('resize',()=>{
 window.addEventListener('beforeunload',()=>{
  teardownRuntime();objectUrls.splice(0).forEach(url=>URL.revokeObjectURL(url));
 },{once:true});
-shell();
