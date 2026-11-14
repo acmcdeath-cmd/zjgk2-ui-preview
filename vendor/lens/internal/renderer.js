@@ -294,7 +294,7 @@ export class GlassRenderer {
 
   startGPU(){
     try{
-      this.gl ||= this.canvas.getContext('webgl2',{alpha:false,antialias:false,preserveDrawingBuffer:true,powerPreference:'low-power'});
+      this.gl ||= this.canvas.getContext('webgl2',{alpha:false,antialias:false,preserveDrawingBuffer:false,powerPreference:'low-power'});
       if(!this.gl)throw new Error('WebGL2 unavailable');
       this.contextExtension=this.gl.getExtension('WEBGL_lose_context');
       this.suspended=false;this.lost=false;this.initGL();this.resize();
@@ -340,7 +340,7 @@ export class GlassRenderer {
     // ResizeObserver can deliver after context loss or teardown.
     if(this.destroyed||this.suspended||this.lost||!this.gl||this.gl.isContextLost?.())return;
     const rect=this.stage.getBoundingClientRect();
-    this.dpr=Math.min(devicePixelRatio||1,1.75);
+    this.dpr=Math.min(devicePixelRatio||1,Number(this.stage.dataset.glassDpr)||1.25);
     const width=Math.max(1,Math.round(rect.width*this.dpr)),height=Math.max(1,Math.round(rect.height*this.dpr));
     if (width===this.width&&height===this.height)return;
     this.width=width;this.height=height;this.canvas.width=width;this.canvas.height=height;
@@ -481,7 +481,7 @@ export class GlassRenderer {
     this.use(p.background);
     gl.uniform1i(p.background.uniforms.uArtwork,0);gl.uniform1f(p.background.uniforms.uTime,this.time);
     // Pause freezes time, so the background never jumps back to an initial pose.
-    gl.uniform1f(p.background.uniforms.uAnimate,this.reducedMotion?0:1);
+    gl.uniform1f(p.background.uniforms.uAnimate,this.settings.motion&&!this.reducedMotion?1:0);
     gl.uniform1f(p.background.uniforms.uGrid,this.settings.scene==='grid'?1:0);
     gl.uniform1f(p.background.uniforms.uBrightness,this.settings.brightness);
     gl.drawArrays(gl.TRIANGLES,0,6);

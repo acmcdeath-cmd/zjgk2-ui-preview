@@ -1,38 +1,41 @@
-# ZJGK 2.0 · Experience Preview v0.2
+# ZJGK 2.0 · Study Atlas v0.3
 
-An Apple-inspired interactive UI prototype for the 2027 Jiangsu Vocational College Entrance Examination preparation platform.
+A product-level UI redesign for the 2027 Jiangsu Vocational College Entrance Examination preparation platform.
 
-## What is included
-- Real Lens Design System 1.1.0-showcase.1 runtime, pinned to upstream commit `7a424c93b9be13cf835b91ea67495fec2ec0584e`.
-- WebGL2 glass material compositor with CSS fallback.
-- Spring / jelly pointer interactions and floating Dock.
-- 13 synthesized interaction cues plus speed-sensitive glass-on-paper friction audio.
-- Glass / Lite theme switch; Desktop / Mobile layout switch.
-- Material and scene controls, draggable lens, progress optics, magnetic drop selection and magnifier XY control.
-- Demo home, subjects, knowledge map, question list, objective and written-response pages.
-- All question data is mock content. No database, login, OCR, AI or production API.
+## Product direction
+This is not a reskin of the legacy quiz website. The primary information architecture is:
+**Subject → Chapter → Knowledge point → Related questions → Original paper / source record.**
 
-## Run
-Open through any static HTTP server. No build command or external runtime CDN is required.
-Render Static Site settings:
+The prototype focuses on source traceability and research-backed knowledge navigation. It does not include legacy homework, class management or mock-exam dashboards.
+
+## UI direction
+- Desktop: persistent subject/navigation rail, central knowledge workspace and contextual source panel.
+- Mobile: independently composed single-column study flow with a compact header and four-item bottom navigation.
+- Liquid Glass is reserved for application chrome, navigation and transient sheets. Question text, reading content and metadata remain high-contrast solid surfaces.
+- No decorative drag-lens playground or unrelated optical controls in the learning workflow.
+
+## Lens integration
+- Upstream Lens Design System 1.1.0-showcase.1, pinned to commit `7a424c93b9be13cf835b91ea67495fec2ec0584e`.
+- MIT license retained at `vendor/lens/LICENSE`; see `NOTICE.md`.
+- One viewport-sized WebGL2 stage. Renderer defaults to event-driven frames rather than continuous background animation.
+- Local renderer patch: configurable DPR cap via `data-glass-dpr`, no preserved drawing buffer, and background animation disabled when motion is off.
+- Mobile DPR cap: 1.0; desktop cap: 1.25.
+- Glass surfaces are limited to the app header, dock and transient sheets. Main content uses solid readable surfaces.
+- CSS fallback when WebGL2 is unavailable.
+- Optional synthesized interaction sounds; no autoplay or background music.
+
+## Run locally
+Serve the repository root over HTTP and open `index.html`. No package install, build step, database, account or external runtime CDN is required.
+
+## Render Static Site
 - Build command: `echo "Static preview: no build required"`
 - Publish directory: `.`
-- Branch: `main`
+- Branch: `v0.3-product-redesign`
 
-## Audio
-The Lens sound engine synthesizes short cues and friction noise with Web Audio API. It does not autoplay. Browsers may require the first user gesture before audio starts. Sound can be muted and volume adjusted in the UI.
+## Data boundary
+All visible question/source entries are clearly marked demonstration data. No real question bank, research atom mapping, answer upload backend, OCR, AI, production API or user data is connected.
 
-## GPU / accessibility
-Glass uses one WebGL2 stage and the upstream GPU context budget / viewport suspension logic. If WebGL2 is unavailable, the system falls back to CSS glass. Lite does not create a WebGL renderer. The UI respects `prefers-reduced-motion`.
-
-## Upstream Lens source
-- Project: https://github.com/ruiqichenbiec/design-systems
-- Directory: `lens/lab/design-system/`
-- Version: `1.1.0-showcase.1`
-- Pinned source commit: `7a424c93b9be13cf835b91ea67495fec2ec0584e`
-- License: MIT; original LICENSE is retained at `vendor/lens/LICENSE`.
-
-The upstream system is integrated locally; no CDN or external JavaScript dependency is loaded at runtime.
-
-## Safety boundary
-This is an isolated preview repository, separate from `acmcdeath-cmd/zjgkxc`. It contains no production data or secrets and is not the production product.
+## Versioning
+- v0.1: initial visual/interaction prototype; branch `v0.1-baseline`.
+- v0.2: Lens interaction experiment; retained on the main branch commit before this redesign.
+- v0.3: independent product information architecture and desktop/mobile redesign.
